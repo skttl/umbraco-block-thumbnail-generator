@@ -25,7 +25,7 @@ export class ImageUploader extends LitElement {
       gap: 10px;
       flex-direction: column;
       align-items: center;
-      padding: 15px;
+      padding: 4px;
       border-radius: 8px;
       background: #f5f5f5;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -134,6 +134,10 @@ export class ImageUploader extends LitElement {
       canvas.height = 250;
     }
 
+    // Enable high-quality image scaling
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
     const padding = this.settings.padding / 100;
     const aspectRatio = this.currentImage.width / this.currentImage.height;
     let drawWidth = canvas.width;
@@ -167,10 +171,14 @@ export class ImageUploader extends LitElement {
     const finalWidth = drawWidth * (1 - 2 * padding);
     const finalHeight = drawHeight * (1 - 2 * padding);
 
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // Use custom background color only when enabled, otherwise use detected color as fallback
     ctx.fillStyle = this.settings.enableCustomBg ? this.settings.bgColor : this.detectedBgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // Draw the image with proper dimensions
     ctx.drawImage(
       this.currentImage,
       paddingX,

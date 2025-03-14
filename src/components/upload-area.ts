@@ -52,6 +52,11 @@ export class UploadArea extends LitElement {
       border-radius: 6px;
       opacity: 0;
       transition: opacity 0.2s ease;
+      image-rendering: -webkit-optimize-contrast; /* Webkit */
+      image-rendering: crisp-edges; /* Firefox */
+      image-rendering: auto; /* Standard */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     #dropZone.has-image canvas {
       opacity: 1;
