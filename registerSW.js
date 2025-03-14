@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/umbraco-block-thumbnail-generator/sw.js', { scope: '/umbraco-block-thumbnail-generator/' })})}
