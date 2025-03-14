@@ -45,7 +45,8 @@ export class ImageUploader extends LitElement {
     bgColor: '#ffffff',
     enableTint: false,
     tintColor: '#000000',
-    padding: 0
+    padding: 0,
+    fitMode: 'width'
   };
 
   @state()
@@ -77,7 +78,8 @@ export class ImageUploader extends LitElement {
         bgColor: savedSettings.bgColor ?? '#ffffff',
         enableTint: savedSettings.enableTint ?? false,
         tintColor: savedSettings.tintColor ?? '#000000',
-        padding: savedSettings.padding ?? 0
+        padding: savedSettings.padding ?? 0,
+        fitMode: savedSettings.fitMode ?? 'width'
       };
     } catch (e) {
       console.error('Failed to load settings:', e);
@@ -137,14 +139,31 @@ export class ImageUploader extends LitElement {
     let drawWidth = canvas.width;
     let drawHeight = canvas.height;
 
-    if (aspectRatio > drawWidth / drawHeight) {
+    // Calculate dimensions based on fit mode
+    if (this.settings.fitMode === 'width') {
+      // Fit to width: Set width to canvas width and calculate height based on aspect ratio
+      drawWidth = canvas.width;
       drawHeight = drawWidth / aspectRatio;
     } else {
+      // Fit to height: Set height to canvas height and calculate width based on aspect ratio
+      drawHeight = canvas.height;
       drawWidth = drawHeight * aspectRatio;
     }
 
-    const paddingX = (canvas.width - drawWidth) / 2 + (drawWidth * padding);
-    const paddingY = (canvas.height - drawHeight) / 2 + (drawHeight * padding);
+    // Calculate padding and final dimensions
+    const horizontalPadding = drawWidth * padding;
+    const verticalPadding = drawHeight * padding;
+    
+    // Calculate x position - if fit to height and image is wider, anchor to left
+    const paddingX = this.settings.fitMode === 'height' && drawWidth > canvas.width 
+      ? horizontalPadding  // Anchor to left
+      : (canvas.width - drawWidth) / 2 + horizontalPadding; // Center horizontally
+
+    // Calculate y position - if fit to width and image is taller, anchor to top
+    const paddingY = this.settings.fitMode === 'width' && drawHeight > canvas.height
+      ? verticalPadding // Anchor to top
+      : (canvas.height - drawHeight) / 2 + verticalPadding; // Center vertically
+
     const finalWidth = drawWidth * (1 - 2 * padding);
     const finalHeight = drawHeight * (1 - 2 * padding);
 
