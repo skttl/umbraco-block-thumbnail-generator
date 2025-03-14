@@ -35,6 +35,8 @@ export class ColorControls extends LitElement {
       flex-direction: column;
       gap: 10px;
       margin-bottom: 15px;
+      padding: 8px;
+      border-radius: 6px;
     }
     .control-row {
       display: grid;
@@ -44,7 +46,7 @@ export class ColorControls extends LitElement {
     }
     .control-row.padding-row {
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto 1fr auto auto;
     }
     .control-row:not(.padding-row) label {
       order: 2;
@@ -108,7 +110,7 @@ export class ColorControls extends LitElement {
       background: var(--primary);
     }
     .range-value {
-      min-width: 48px;
+      min-width: 36px;
       font-size: 14px;
       color: var(--primary-dark);
       font-variant-numeric: tabular-nums;
@@ -247,9 +249,6 @@ export class ColorControls extends LitElement {
             <label for="padding">Padding</label>
             <input type="range" id="padding" min="0" max="50" .value=${this.settings.padding}>
             <span class="range-value">${this.settings.padding}%</span>
-          </div>
-          <div class="control-row">
-            <label for="fitMode">Fit Mode</label>
             <select id="fitMode" .value=${this.settings.fitMode} @change=${this.handleFitModeChange}>
               <option value="width">Fit to Width</option>
               <option value="height">Fit to Height</option>
