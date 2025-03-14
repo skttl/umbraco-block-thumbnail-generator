@@ -7,6 +7,7 @@ A web component for generating beautiful thumbnails for Umbraco blocks. Built wi
 - Upload images via drag & drop, file selection, or paste
 - Automatic background color detection from image edges
 - Custom background color and tint options
+- Flexible fit modes (fit to width or height)
 - Download in multiple formats (PNG, JPG, WEBP)
 - Responsive design with dark mode support
 - Maintains 16:9 aspect ratio
@@ -18,8 +19,17 @@ The project consists of several web components, all prefixed with `umbthumb-` to
 
 - `umbthumb-image-uploader`: Main component that orchestrates the entire interface
 - `umbthumb-upload-area`: Handles file upload and canvas display
-- `umbthumb-color-controls`: Manages background and tint settings
+- `umbthumb-color-controls`: Manages background, tint, and fit mode settings
 - `umbthumb-download-controls`: Handles image export in various formats
+
+## Usage
+
+### Fit Modes
+
+The component supports two fit modes for image display:
+
+- **Fit to Width**: Image will fit the full width of the canvas. If the image is taller than the canvas, it will be anchored to the top.
+- **Fit to Height**: Image will fit the full height of the canvas. If the image is wider than the canvas, it will be anchored to the left.
 
 ## Development
 
@@ -61,4 +71,4 @@ npm run deploy
 
 ## License
 
-MIT © Søren Kottal
+MIT Søren Kottal
