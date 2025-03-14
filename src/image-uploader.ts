@@ -33,7 +33,7 @@ export class ImageUploader extends LitElement {
 
     @media (prefers-color-scheme: dark) {
       .controls {
-        background: #2d2d2d;
+        background: rgb(0, 0, 0, 0.05);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
     }
@@ -128,9 +128,8 @@ export class ImageUploader extends LitElement {
     // Set canvas size to match the container width while maintaining aspect ratio
     const container = canvas.parentElement;
     if (container) {
-      const containerWidth = container.clientWidth;
-      canvas.width = containerWidth;
-      canvas.height = containerWidth * (9/16); // 16:9 aspect ratio
+      canvas.width = 400;
+      canvas.height = 250;
     }
 
     const padding = this.settings.padding / 100;

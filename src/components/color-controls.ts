@@ -28,7 +28,6 @@ export class ColorControls extends LitElement {
       flex-direction: column;
       gap: 16px;
       width: 100%;
-      padding: 8px;
     }
     .control-group {
       display: flex;
@@ -37,95 +36,107 @@ export class ColorControls extends LitElement {
       padding: 12px;
       background: rgba(0, 0, 0, 0.03);
       border-radius: 6px;
-      transition: background-color 0.2s ease;
     }
-    .color-picker {
+    .control-row {
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 12px;
     }
-    .color-picker input[type="color"] {
-      width: 32px;
-      height: 32px;
-      padding: 2px;
-      border: 2px solid #ddd;
-      border-radius: 4px;
-      cursor: pointer;
-      background: transparent;
-      transition: border-color 0.2s ease;
-    }
-    .color-picker input[type="color"]:hover:not(:disabled) {
-      border-color: #4CAF50;
-    }
-    .color-picker input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-      accent-color: #4CAF50;
-    }
-    .color-picker input[type="color"]:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .slider-control {
+    .control-row.padding-row {
       display: grid;
       grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
     }
-    .slider-control input[type="range"] {
-      width: 100%;
-      accent-color: #4CAF50;
-      height: 4px;
-      border-radius: 2px;
+    .control-row:not(.padding-row) label {
+      order: 2;
     }
-    .slider-control .value {
-      min-width: 3em;
-      text-align: right;
-      color: #666;
-      font-weight: 400;
-      letter-spacing: 0.2px;
-      font-variant-numeric: tabular-nums;
+    .control-row:not(.padding-row) input[type="checkbox"] {
+      order: 1;
+    }
+    .control-row:not(.padding-row) input[type="color"] {
+      order: 3;
+      margin-left: auto;
     }
     label {
       font-size: 14px;
-      color: #666;
+      color: var(--primary-dark);
       user-select: none;
       font-weight: 400;
       letter-spacing: 0.2px;
       white-space: nowrap;
+    }
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    input[type="color"] {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: none;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    input[type="color"]::-webkit-color-swatch {
+      border: 2px solid var(--primary);
+      border-radius: 4px;
+    }
+    input[type="range"] {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary-dark);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: var(--primary);
+    }
+    .range-value {
+      min-width: 48px;
+      font-size: 14px;
+      color: var(--primary-dark);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
     }
 
     @media (prefers-color-scheme: dark) {
       .control-group {
         background: rgba(255, 255, 255, 0.03);
       }
-      .color-picker input[type="color"] {
-        border-color: #444;
-      }
-      .color-picker input[type="color"]:hover:not(:disabled) {
-        border-color: #66bb6a;
-      }
-      .slider-control .value {
-        color: #ccc;
-      }
       label {
-        color: #ccc;
+        color: var(--primary-dark);
       }
-      .color-picker input[type="checkbox"] {
-        accent-color: #66bb6a;
-      }
-      .slider-control input[type="range"] {
-        accent-color: #66bb6a;
-        background-color: #2d2d2d;
+      input[type="range"] {
+        background: rgba(255, 255, 255, 0.1);
       }
       input[type="range"]::-webkit-slider-thumb {
-        background: #66bb6a;
+        background: var(--primary);
       }
-      input[type="range"]::-moz-range-thumb {
-        background: #66bb6a;
+      input[type="range"]::-webkit-slider-thumb:hover {
+        background: var(--primary-light);
+      }
+      input[type="color"]::-webkit-color-swatch {
+        border-color: var(--primary-light);
+      }
+      .range-value {
+        color: var(--primary-dark);
       }
     }
   `;
@@ -197,22 +208,22 @@ export class ColorControls extends LitElement {
     return html`
       <div class="color-controls">
         <div class="control-group">
-          <div class="color-picker">
+          <div class="control-row">
             <input type="checkbox" id="enableCustomBg" .checked=${this.settings.enableCustomBg}>
             <label for="enableCustomBg">Custom Background</label>
             <input type="color" id="bgColor" .value=${this.settings.enableCustomBg ? this.settings.bgColor : (this.settings.detectedBgColor || '#ffffff')} ?disabled=${!this.settings.enableCustomBg}>
           </div>
-          <div class="color-picker">
+          <div class="control-row">
             <input type="checkbox" id="enableTint" .checked=${this.settings.enableTint}>
             <label for="enableTint">Enable Tint</label>
             <input type="color" id="tintColor" .value=${this.settings.tintColor} ?disabled=${!this.settings.enableTint}>
           </div>
         </div>
         <div class="control-group">
-          <div class="slider-control">
+          <div class="control-row padding-row">
             <label for="padding">Padding:</label>
             <input type="range" id="padding" min="0" max="50" .value=${this.settings.padding}>
-            <span class="value">${this.settings.padding}%</span>
+            <span class="range-value">${this.settings.padding}%</span>
           </div>
         </div>
       </div>

@@ -19,15 +19,11 @@ export class DownloadControls extends LitElement {
       flex-direction: column;
       gap: 16px;
       width: 100%;
-      padding: 8px;
     }
     .control-group {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.03);
-      border-radius: 6px;
       align-items: center;
     }
     .download-group {
@@ -37,7 +33,7 @@ export class DownloadControls extends LitElement {
     }
     label {
       font-size: 14px;
-      color: #666;
+      color: var(--primary-dark);
       user-select: none;
       font-weight: 400;
       letter-spacing: 0.2px;
@@ -59,14 +55,14 @@ export class DownloadControls extends LitElement {
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
-      color: #fff;
-      background-color: #1b5e20; /* Dark green with contrast ratio 7.5:1 against white */
+      color: #ffffff;
+      background-color: var(--primary-dark);
     }
     button:hover {
-      background-color: #2e7d32;
+      background-color: var(--primary);
     }
     button:focus {
-      outline: 2px solid #2e7d32;
+      outline: 2px solid var(--primary);
       outline-offset: 2px;
     }
     button:active {
@@ -74,25 +70,26 @@ export class DownloadControls extends LitElement {
     }
     .file-size {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.9);
+      color: var(--primary-dark);
       font-variant-numeric: tabular-nums;
     }
 
     @media (prefers-color-scheme: dark) {
-      .control-group {
-        background: rgba(255, 255, 255, 0.03);
-      }
       label {
-        color: #ccc;
+        color: var(--primary-dark);
       }
       button {
-        background-color: #2e7d32; /* Green 800 with contrast ratio 4.6:1 against white */
+        background-color: var(--primary);
+        color: #ffffff;
       }
       button:hover {
-        background-color: #388e3c; /* Green 700 with contrast ratio 5.2:1 against white */
+        background-color: var(--primary-light);
       }
       button:focus {
-        outline-color: #388e3c;
+        outline-color: var(--primary-light);
+      }
+      .file-size {
+        color: var(--primary-dark);
       }
     }
 

@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate beautiful thumbnails for Umbraco blocks">
+    <meta name="theme-color" content="#162435">
     <title>Umbraco Block Thumbnail Generator</title>
+    <link rel="manifest" href="/umbraco-block-thumbnail-generator/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/umbraco-block-thumbnail-generator/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/umbraco-block-thumbnail-generator/icons/icon-192x192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <script type="module" src="/src/image-uploader.ts"></script>
     <style>
         :root {
-            --bg-color: #f0f0f0;
-            --text-color: #333;
-            --transition-time: 0.3s;
-            --font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --primary-dark: #162435;
+            --primary: #3746b9;
+            --primary-light: #4d5bc8;
+            --accent: #f9bdb8;
+            --accent-dark: #f7a49d;
+            --background: #f2eae5;
+            --background-dark: #e5d9d1;
+            --gold: #9e7f4e;
+            --gold-light: #b69a6e;
+            --text-color: var(--primary-dark);
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            --transition-time: 0.2s;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-color: #1a1a1a;
-                --text-color: #e0e0e0;
+                --primary-dark: #f2eae5;
+                --primary: #4d5bc8;
+                --primary-light: #3746b9;
+                --accent: #f9bdb8;
+                --accent-dark: #f7a49d;
+                --background: #162435;
+                --background-dark: #0d1624;
+                --gold: #b69a6e;
+                --gold-light: #9e7f4e;
+                --text-color: var(--primary-dark);
             }
         }
 
@@ -31,13 +51,12 @@
         }
 
         body {
+            margin: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: var(--bg-color);
+            background-color: var(--background);
             color: var(--text-color);
             font-family: var(--font-family);
             transition: background-color var(--transition-time), color var(--transition-time);
@@ -52,6 +71,24 @@
             letter-spacing: 0.5px;
             font-weight: bold;
             margin-top: auto;
+        }
+
+
+        .offline-banner {
+            display: none;
+            background-color: var(--accent);
+            color: var(--primary-dark);
+            text-align: center;
+            padding: 0.5rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .offline-banner.show {
+            display: block;
         }
 
         footer {
@@ -78,12 +115,18 @@
                 }
             }
         }
-    </style>
-</head>
 
-<body>
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+  </head>
+  <body>
     <h1>Umbraco Block Thumbnail Generator</h1>
     <umbthumb-image-uploader></umbthumb-image-uploader>
+    <div class="offline-banner">You are currently offline. Some features may be limited.</div>
     <footer>
         <p>&copy; 2025 Søren Kottal</p>
         <div class="flex flex-wrap gap-x-4 gap-y-1">
@@ -120,7 +163,7 @@
                     </path>
                 </svg>
             </a>
-            <a href="https://our.umbraco.com/members/skttl/" target="_blank" rel="noopener noreferer">
+            <a href="https://forum.umbraco.com/u/skttl/summary" target="_blank" rel="noopener noreferer">
                 <svg viewBox="0 0 510 512" role="img">
                     <path
                         d="M255.4 8C118.4 7.8 7.1 118.7 7 255.7c-.1 137 111 248.2 248 248.3 136.9 0 247.8-110.7 248-247.7S392.3 8.2 255.4 8zm145 266q-1.1 40.7-14 65t-43.5 35q-30.6 10.7-85.5 10.5h-4.6q-54.8.2-85.4-10.5t-43.5-35q-12.9-24.4-14-65a224.8 224.8 0 0 1 0-30.7 418.4 418.4 0 0 1 3.6-43.9c1.9-13.4 3.6-22.6 5.4-32 1-4.9 1.3-6.4 1.8-8.5a5.1 5.1 0 0 1 4.9-3.9h.7l32 5a5.1 5.1 0 0 1 4.2 5 5 5 0 0 1 0 .8l-1.7 8.8q-2.4 13.3-4.8 33.7a380.6 380.6 0 0 0-2.6 42.2q-.3 40.4 8.1 59.8a43.9 43.9 0 0 0 31.3 25.2 243 243 0 0 0 57.2 5.1h10.3a242.6 242.6 0 0 0 57.3-5.2 43.9 43.9 0 0 0 31.2-25.2q8.5-19.4 8.1-59.8a388 388 0 0 0-2.6-42.2q-2.5-20.4-4.9-33.7l-1.7-8.8a5 5 0 0 1 0-.8 5 5 0 0 1 4.2-5l32-5h.8a5 5 0 0 1 4.9 3.9c.6 2.1.8 3.6 1.8 8.5 1.8 9.6 3.5 18.8 5.4 32a415.7 415.7 0 0 1 3.6 43.9 228.1 228.1 0 0 1 0 30.7z">
@@ -142,6 +185,31 @@
             </a>
         </div>
     </footer>
-</body>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/umbraco-block-thumbnail-generator/sw.js')
+            .then(registration => {
+              console.log('ServiceWorker registration successful');
+            })
+            .catch(err => {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
 
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+          document.querySelector('.offline-banner').classList.remove('show');
+        });
+        window.addEventListener('offline', () => {
+          document.querySelector('.offline-banner').classList.add('show');
+        });
+
+        // Check initial online status
+        if (!navigator.onLine) {
+          document.querySelector('.offline-banner').classList.add('show');
+        }
+      }
+    </script>
+  </body>
 </html>

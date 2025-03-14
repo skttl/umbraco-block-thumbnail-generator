@@ -16,8 +16,8 @@ export class UploadArea extends LitElement {
     }
     #dropZone {
       width: 100%;
-      aspect-ratio: 16/9;
-      border: 2px dashed #ccc;
+      aspect-ratio: 8/5;
+      border: 2px dashed var(--primary);
       border-radius: 6px;
       display: flex;
       align-items: center;
@@ -26,21 +26,22 @@ export class UploadArea extends LitElement {
       transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
-      background: #fff;
+      background: var(--background);
     }
     #dropZone:hover {
-      border-color: #4CAF50;
+      border-color: var(--primary-light);
+      background: var(--background-dark);
     }
     #dropZone.dragover {
-      border-color: #4CAF50;
-      background: rgba(76, 175, 80, 0.1);
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
     }
     #dropZone.has-image {
       border-style: solid;
-      border-color: #ccc;
+      border-color: var(--primary);
     }
     #dropZone.has-image:hover {
-      border-color: #4CAF50;
+      border-color: var(--primary-light);
     }
     canvas {
       position: absolute;
@@ -55,9 +56,19 @@ export class UploadArea extends LitElement {
     #dropZone.has-image canvas {
       opacity: 1;
     }
+    #dropZone.has-image .dropzone-text {
+      opacity: 0;
+      background: color-mix(in srgb, var(--background) 95%, transparent);
+      margin: 20px;
+      padding: 16px 24px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    #dropZone.has-image:hover .dropzone-text {
+      opacity: 0.98;
+    }
     .dropzone-text {
       font-size: 16px;
-      color: #666;
+      color: var(--primary-dark);
       text-align: center;
       padding: 20px;
       user-select: none;
@@ -67,40 +78,31 @@ export class UploadArea extends LitElement {
       border-radius: 4px;
       text-wrap: balance;
     }
-    #dropZone.has-image .dropzone-text {
-      opacity: 0;
-      background: rgba(255, 255, 255, 0.95);
-      margin: 20px;
-      padding: 16px 24px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    #dropZone.has-image:hover .dropzone-text {
-      opacity: 0.98;
-    }
 
     @media (prefers-color-scheme: dark) {
       #dropZone {
-        border-color: #444;
-        background: #1a1a1a;
+        border-color: var(--primary-light);
+        background: var(--background);
       }
       #dropZone:hover {
-        border-color: #66bb6a;
+        border-color: var(--primary);
+        background: var(--background-dark);
       }
       #dropZone.dragover {
-        border-color: #66bb6a;
-        background: rgba(102, 187, 106, 0.1);
+        border-color: var(--accent);
+        background: color-mix(in srgb, var(--accent) 5%, transparent);
       }
       #dropZone.has-image {
-        border-color: #444;
+        border-color: var(--primary-light);
       }
       #dropZone.has-image:hover {
-        border-color: #66bb6a;
+        border-color: var(--primary);
       }
       .dropzone-text {
-        color: #ccc;
+        color: var(--primary-dark);
       }
       #dropZone.has-image .dropzone-text {
-        background: rgba(26, 26, 26, 0.95);
+        background: color-mix(in srgb, var(--background) 95%, transparent);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
     }
