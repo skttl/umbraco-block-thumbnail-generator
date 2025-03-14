@@ -100,7 +100,7 @@ export class ImageUploader extends LitElement {
       this.detectedBgColor = e.detail.backgroundColor;
       this.settings = {
         ...this.settings,
-        enableCustomBg: true,
+        enableCustomBg: false,
         bgColor: e.detail.backgroundColor
       };
     }
@@ -148,7 +148,7 @@ export class ImageUploader extends LitElement {
     const finalWidth = drawWidth * (1 - 2 * padding);
     const finalHeight = drawHeight * (1 - 2 * padding);
 
-    // Use detected background color as fallback when custom background is disabled
+    // Use custom background color only when enabled, otherwise use detected color as fallback
     ctx.fillStyle = this.settings.enableCustomBg ? this.settings.bgColor : this.detectedBgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
