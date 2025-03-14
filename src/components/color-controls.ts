@@ -7,6 +7,7 @@ export interface ColorSettings {
   enableTint: boolean;
   tintColor: string;
   padding: number;
+  fitMode: 'width' | 'height';
   detectedBgColor?: string;
 }
 
@@ -32,10 +33,8 @@ export class ColorControls extends LitElement {
     .control-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.03);
-      border-radius: 6px;
+      gap: 10px;
+      margin-bottom: 15px;
     }
     .control-row {
       display: grid;
@@ -115,6 +114,21 @@ export class ColorControls extends LitElement {
       font-variant-numeric: tabular-nums;
       text-align: right;
     }
+    .control-row select {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--primary);
+      background: var(--background);
+      color: var(--primary-dark);
+      cursor: pointer;
+    }
+    .control-row select:hover {
+      border-color: var(--primary-light);
+    }
+    .control-row select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
 
     @media (prefers-color-scheme: dark) {
       .control-group {
@@ -148,6 +162,7 @@ export class ColorControls extends LitElement {
     enableTint: false,
     tintColor: '#000000',
     padding: 0,
+    fitMode: 'width',
     detectedBgColor: '#ffffff'
   };
 
@@ -159,12 +174,22 @@ export class ColorControls extends LitElement {
     }));
   }
 
+  private handleFitModeChange = (e: Event): void => {
+    const select = e.target as HTMLSelectElement;
+    this.settings = {
+      ...this.settings,
+      fitMode: select.value as 'width' | 'height'
+    };
+    this.dispatchSettingsChange(this.settings);
+  }
+
   protected override firstUpdated(): void {
     const enableCustomBg = this.renderRoot.querySelector<HTMLInputElement>('#enableCustomBg');
     const bgColor = this.renderRoot.querySelector<HTMLInputElement>('#bgColor');
     const enableTint = this.renderRoot.querySelector<HTMLInputElement>('#enableTint');
     const tintColor = this.renderRoot.querySelector<HTMLInputElement>('#tintColor');
     const padding = this.renderRoot.querySelector<HTMLInputElement>('#padding');
+    const fitMode = this.renderRoot.querySelector<HTMLSelectElement>('#fitMode');
 
     if (enableCustomBg && bgColor) {
       enableCustomBg.addEventListener('change', () => {
@@ -194,13 +219,13 @@ export class ColorControls extends LitElement {
 
     if (padding) {
       padding.addEventListener('input', () => {
-        this.settings = { ...this.settings, padding: parseInt(padding.value) };
-        const valueDisplay = padding.nextElementSibling;
-        if (valueDisplay) {
-          valueDisplay.textContent = `${padding.value}%`;
-        }
+        this.settings = { ...this.settings, padding: Number(padding.value) };
         this.dispatchSettingsChange(this.settings);
       });
+    }
+
+    if (fitMode) {
+      fitMode.addEventListener('change', this.handleFitModeChange);
     }
   }
 
@@ -209,21 +234,26 @@ export class ColorControls extends LitElement {
       <div class="color-controls">
         <div class="control-group">
           <div class="control-row">
-            <input type="checkbox" id="enableCustomBg" .checked=${this.settings.enableCustomBg}>
-            <label for="enableCustomBg">Custom Background</label>
-            <input type="color" id="bgColor" .value=${this.settings.enableCustomBg ? this.settings.bgColor : (this.settings.detectedBgColor || '#ffffff')} ?disabled=${!this.settings.enableCustomBg}>
+            <input type="checkbox" id="enableCustomBg" ?checked=${this.settings.enableCustomBg}>
+            <label for="enableCustomBg">Background Color</label>
+            <input type="color" id="bgColor" .value=${this.settings.bgColor} ?disabled=${!this.settings.enableCustomBg}>
           </div>
           <div class="control-row">
-            <input type="checkbox" id="enableTint" .checked=${this.settings.enableTint}>
-            <label for="enableTint">Enable Tint</label>
+            <input type="checkbox" id="enableTint" ?checked=${this.settings.enableTint}>
+            <label for="enableTint">Tint Color</label>
             <input type="color" id="tintColor" .value=${this.settings.tintColor} ?disabled=${!this.settings.enableTint}>
           </div>
-        </div>
-        <div class="control-group">
           <div class="control-row padding-row">
-            <label for="padding">Padding:</label>
+            <label for="padding">Padding</label>
             <input type="range" id="padding" min="0" max="50" .value=${this.settings.padding}>
             <span class="range-value">${this.settings.padding}%</span>
+          </div>
+          <div class="control-row">
+            <label for="fitMode">Fit Mode</label>
+            <select id="fitMode" .value=${this.settings.fitMode} @change=${this.handleFitModeChange}>
+              <option value="width">Fit to Width</option>
+              <option value="height">Fit to Height</option>
+            </select>
           </div>
         </div>
       </div>
