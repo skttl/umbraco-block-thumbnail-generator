@@ -208,37 +208,45 @@ export class UploadArea extends LitElement {
             for (let i = 0; i < img.width; i++) {
               // Top edge
               const topIdx = (i + 0 * img.width) * 4;
-              edgePixels.push({
-                r: data[topIdx],
-                g: data[topIdx + 1],
-                b: data[topIdx + 2]
-              });
+              if (data[topIdx + 3] > 0) { // Check alpha channel
+                edgePixels.push({
+                  r: data[topIdx],
+                  g: data[topIdx + 1],
+                  b: data[topIdx + 2]
+                });
+              }
 
               // Bottom edge
               const bottomIdx = (i + (img.height - 1) * img.width) * 4;
-              edgePixels.push({
-                r: data[bottomIdx],
-                g: data[bottomIdx + 1],
-                b: data[bottomIdx + 2]
-              });
+              if (data[bottomIdx + 3] > 0) { // Check alpha channel
+                edgePixels.push({
+                  r: data[bottomIdx],
+                  g: data[bottomIdx + 1],
+                  b: data[bottomIdx + 2]
+                });
+              }
             }
 
             for (let i = 0; i < img.height; i++) {
               // Left edge
               const leftIdx = (0 + i * img.width) * 4;
-              edgePixels.push({
-                r: data[leftIdx],
-                g: data[leftIdx + 1],
-                b: data[leftIdx + 2]
-              });
+              if (data[leftIdx + 3] > 0) { // Check alpha channel
+                edgePixels.push({
+                  r: data[leftIdx],
+                  g: data[leftIdx + 1],
+                  b: data[leftIdx + 2]
+                });
+              }
 
               // Right edge
               const rightIdx = ((img.width - 1) + i * img.width) * 4;
-              edgePixels.push({
-                r: data[rightIdx],
-                g: data[rightIdx + 1],
-                b: data[rightIdx + 2]
-              });
+              if (data[rightIdx + 3] > 0) { // Check alpha channel
+                edgePixels.push({
+                  r: data[rightIdx],
+                  g: data[rightIdx + 1],
+                  b: data[rightIdx + 2]
+                });
+              }
             }
 
             // Calculate the most common color
@@ -248,14 +256,17 @@ export class UploadArea extends LitElement {
               colorCounts.set(color, (colorCounts.get(color) || 0) + 1);
             });
 
+            // Default to white if no non-transparent pixels found
             let dominantColor = '#ffffff';
-            let maxCount = 0;
-            colorCounts.forEach((count, color) => {
-              if (count > maxCount) {
-                maxCount = count;
-                dominantColor = color;
-              }
-            });
+            if (edgePixels.length > 0) {
+              let maxCount = 0;
+              colorCounts.forEach((count, color) => {
+                if (count > maxCount) {
+                  maxCount = count;
+                  dominantColor = color;
+                }
+              });
+            }
 
             // Dispatch event with detected background color
             this.dispatchEvent(new CustomEvent('image-loaded', { 
