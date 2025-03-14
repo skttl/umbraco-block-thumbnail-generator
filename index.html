@@ -73,23 +73,6 @@
         }
 
 
-        .offline-banner {
-            display: none;
-            background-color: var(--accent);
-            color: var(--primary-dark);
-            text-align: center;
-            padding: 0.5rem;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-        }
-
-        .offline-banner.show {
-            display: block;
-        }
-
         footer {
             margin-top: auto;
             display: flex;
@@ -126,7 +109,6 @@
   <body>
     <h1>Umbraco Block Thumbnail Generator</h1>
     <umbthumb-image-uploader></umbthumb-image-uploader>
-    <div class="offline-banner">You are currently offline. Some features may be limited.</div>
     <footer>
         <p>&copy; 2025 Søren Kottal</p>
         <div class="flex flex-wrap gap-x-4 gap-y-1">
@@ -184,6 +166,7 @@
                 </svg>
             </a>
         </div>
+        <iframe src="https://github.com/sponsors/skttl/button" title="Sponsor skttl" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
     </footer>
     <script>
       if ('serviceWorker' in navigator) {
@@ -196,19 +179,6 @@
               console.log('ServiceWorker registration failed: ', err);
             });
         });
-
-        // Handle offline/online status
-        window.addEventListener('online', () => {
-          document.querySelector('.offline-banner').classList.remove('show');
-        });
-        window.addEventListener('offline', () => {
-          document.querySelector('.offline-banner').classList.add('show');
-        });
-
-        // Check initial online status
-        if (!navigator.onLine) {
-          document.querySelector('.offline-banner').classList.add('show');
-        }
       }
     </script>
   </body>
